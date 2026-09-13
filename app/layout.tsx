@@ -4,6 +4,7 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { AuroraBackground } from "@/components/ui/AuroraBackground";
 import { ScrollProgressBar } from "@/components/ui/ScrollProgressBar";
+import { AuthHydrator } from "@/components/auth/AuthHydrator";
 import "./globals.css";
 
 const inter = Inter({
@@ -59,6 +60,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="relative min-h-screen bg-bg-primary font-sans antialiased">
         <AuroraBackground />
         <ScrollProgressBar />
+        <AuthHydrator />
         <Navbar />
         <main className="relative z-0">{children}</main>
         <Footer />

@@ -13,6 +13,7 @@ import { XpToast } from "@/components/ui/XpToast";
 import { accentClasses } from "@/lib/accent";
 import { fireConfetti } from "@/lib/confetti";
 import { useProgressStore } from "@/lib/store";
+import { markOpeningComplete } from "@/lib/sync-progress";
 import type { Opening } from "@/types/opening";
 
 export function OpeningDetailClient({ opening }: { opening: Opening }) {
@@ -28,7 +29,6 @@ export function OpeningDetailClient({ opening }: { opening: Opening }) {
   const [showToast, setShowToast] = useState(false);
 
   const isCompleted = useProgressStore((s) => s.isCompleted(opening.slug));
-  const markCompleted = useProgressStore((s) => s.markCompleted);
 
   function loadLine(moves: string[], label: string) {
     setLineMoves(moves);
@@ -87,7 +87,7 @@ export function OpeningDetailClient({ opening }: { opening: Opening }) {
 
   function handleMarkComplete() {
     if (isCompleted) return;
-    markCompleted(opening.slug, 50);
+    markOpeningComplete(opening.slug);
     fireConfetti();
     setShowToast(true);
   }

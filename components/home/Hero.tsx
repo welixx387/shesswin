@@ -2,7 +2,7 @@
 
 import { MouseEvent, useRef } from "react";
 import { motion, useMotionTemplate, useMotionValue, useSpring } from "framer-motion";
-import { Play, Star } from "lucide-react";
+import { Play } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { CountUp } from "@/components/ui/CountUp";
 import { AutoplayBoard } from "@/components/chess/AutoplayBoard";
@@ -151,16 +151,9 @@ export function Hero() {
             </div>
             <div>
               <div className="font-heading text-2xl font-bold text-text-primary">
-                <CountUp value={45} />
+                <CountUp value={openings.length} />
               </div>
               <div className="text-sm text-text-secondary">дебютов</div>
-            </div>
-            <div>
-              <div className="flex items-center gap-1.5 font-heading text-2xl font-bold text-text-primary">
-                <CountUp value={4.9} decimals={1} />
-                <Star size={18} className="fill-accent-gold text-accent-gold" />
-              </div>
-              <div className="text-sm text-text-secondary">рейтинг</div>
             </div>
           </motion.div>
         </div>

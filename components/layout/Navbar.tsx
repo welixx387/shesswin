@@ -1,10 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { Logo } from "@/components/ui/Logo";
 import { Button } from "@/components/ui/Button";
+import { useAuthStore } from "@/lib/auth-store";
 import { cn } from "@/lib/utils";
 
 const NAV_LINKS = [
@@ -17,6 +19,8 @@ export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const { scrollY } = useScroll();
+  const user = useAuthStore((s) => s.user);
+  const initials = user?.name.trim().split(/\s+/).slice(0, 2).map((p) => p[0]?.toUpperCase()).join("");
 
   useMotionValueEvent(scrollY, "change", (latest) => {
     setScrolled(latest > 24);
@@ -61,7 +65,24 @@ export function Navbar() {
           ))}
         </ul>
 
-        <div className="hidden md:block">
+        <div className="hidden items-center gap-4 md:flex">
+          {user ? (
+            <Link
+              href="/account"
+              className="grid h-9 w-9 place-items-center rounded-full bg-gradient-brand font-heading text-xs font-bold text-white shadow-glow-primary transition-transform hover:-translate-y-0.5"
+              aria-label="Личный кабинет"
+              title={user.name}
+            >
+              {initials || "S"}
+            </Link>
+          ) : (
+            <Link
+              href="/login"
+              className="link-underline text-sm font-medium text-text-secondary transition-colors hover:text-text-primary"
+            >
+              Войти
+            </Link>
+          )}
           <Button href="/debuts" size="md" pulse>
             Начать бесплатно
           </Button>
@@ -122,6 +143,31 @@ export function Navbar() {
                   )}
                 </motion.li>
               ))}
+              <motion.li
+                variants={{ hidden: { opacity: 0, y: 16 }, show: { opacity: 1, y: 0 } }}
+                transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
+              >
+                {user ? (
+                  <Link
+                    href="/account"
+                    onClick={() => setMenuOpen(false)}
+                    className="flex items-center gap-3 rounded-xl px-4 py-4 text-lg font-medium text-text-primary transition-colors hover:bg-white/[0.05]"
+                  >
+                    <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-gradient-brand font-heading text-xs font-bold text-white">
+                      {initials || "S"}
+                    </span>
+                    Личный кабинет
+                  </Link>
+                ) : (
+                  <Link
+                    href="/login"
+                    onClick={() => setMenuOpen(false)}
+                    className="block rounded-xl px-4 py-4 text-lg font-medium text-text-primary transition-colors hover:bg-white/[0.05]"
+                  >
+                    Войти
+                  </Link>
+                )}
+              </motion.li>
               <motion.li
                 variants={{ hidden: { opacity: 0, y: 16 }, show: { opacity: 1, y: 0 } }}
                 transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
