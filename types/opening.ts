@@ -16,21 +16,32 @@ export type SampleGame = {
   note: string;
 };
 
+export type Puzzle = {
+  prompt: string;
+  fromMoves: string[];
+  solution: string;
+  explanation: string;
+};
+
 export type Opening = {
   slug: string;
   name: string;
   nameEn: string;
   eco: string;
   level: string;
+  eloRange: string;
   accent: AccentColor;
   tagline: string;
   category: "open" | "semi-open" | "closed";
   moves: string[];
   heroMoves: string[];
   intro: string;
+  history: string;
   ideasWhite: string[];
   ideasBlack: string[];
+  pawnStructure: string;
   keyLines: KeyLine[];
   mistakes: { title: string; explanation: string }[];
   sampleGame: SampleGame;
+  puzzles: Puzzle[];
 };

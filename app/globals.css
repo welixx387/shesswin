@@ -144,10 +144,6 @@ body {
     animation: shimmer 2.5s linear infinite;
   }
 
-  .knight-cursor {
-    cursor: none;
-  }
-
   .link-underline {
     position: relative;
   }

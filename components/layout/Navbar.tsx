@@ -11,7 +11,6 @@ const NAV_LINKS = [
   { label: "Курсы", href: "/debuts" },
   { label: "Дебюты", href: "/#openings" },
   { label: "Задачи", href: null },
-  { label: "Рейтинг", href: null },
 ];
 
 export function Navbar() {

@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { BookOpen } from "lucide-react";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { Reveal } from "@/components/ui/Reveal";
-import { KNIGHT_PATHS } from "@/lib/knight-paths";
+import { QUEEN_CIRCLES, QUEEN_PATHS } from "@/lib/queen-shape";
 
 function InteractiveIcon({ hovered }: { hovered: boolean }) {
   return (
@@ -17,8 +17,20 @@ function InteractiveIcon({ hovered }: { hovered: boolean }) {
       animate={{ y: hovered ? -4 : 0, rotate: hovered ? -10 : 0 }}
       transition={{ type: "spring", stiffness: 300, damping: 15 }}
     >
-      {KNIGHT_PATHS.map((d) => (
+      {QUEEN_PATHS.map((d) => (
         <path key={d} d={d} stroke="#6366F1" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" />
+      ))}
+      {QUEEN_CIRCLES.map((c) => (
+        <circle
+          key={`${c.cx}-${c.cy}`}
+          cx={c.cx}
+          cy={c.cy}
+          r={c.r}
+          stroke="#6366F1"
+          strokeWidth={1.8}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
       ))}
     </motion.svg>
   );

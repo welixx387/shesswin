@@ -3,9 +3,10 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { BookOpen, ChevronRight, Crown, Sparkles, Swords, Target } from "lucide-react";
+import { BookOpen, ChevronRight, Crown, Puzzle, ScrollText, Sparkles, Swords, Target } from "lucide-react";
 import { Accordion, AccordionItem } from "@/components/ui/Accordion";
 import { OpeningExplorer } from "@/components/chess/OpeningExplorer";
+import { PuzzlePractice } from "@/components/chess/PuzzlePractice";
 import { Button } from "@/components/ui/Button";
 import { Reveal } from "@/components/ui/Reveal";
 import { XpToast } from "@/components/ui/XpToast";
@@ -115,6 +116,12 @@ export function OpeningDetailClient({ opening }: { opening: Opening }) {
           <span className="rounded-full border border-border-subtle px-3 py-1 font-mono text-xs text-text-secondary">
             ECO {opening.eco}
           </span>
+          <span
+            className="rounded-full border border-border-subtle px-3 py-1 text-xs text-text-secondary"
+            title="Ориентировочный рейтинг, на котором этот дебют даёт наибольшую пользу"
+          >
+            ~{opening.eloRange}
+          </span>
           {isCompleted && (
             <span className="rounded-full border border-accent-success/40 bg-accent-success/15 px-3 py-1 text-xs font-semibold text-accent-success">
               ✓ Изучено
@@ -150,7 +157,21 @@ export function OpeningDetailClient({ opening }: { opening: Opening }) {
           <Reveal>
             <Accordion defaultOpen="intro" className="mb-8">
               <AccordionItem id="intro" title="Введение" icon={<BookOpen size={18} className={accent.text} />}>
-                <p>{opening.intro}</p>
+                <div className="flex flex-col gap-4">
+                  <p>{opening.intro}</p>
+                  <div>
+                    <h4 className="mb-1 flex items-center gap-1.5 font-heading text-xs font-semibold uppercase tracking-wider text-text-secondary/70">
+                      <ScrollText size={14} /> История
+                    </h4>
+                    <p>{opening.history}</p>
+                  </div>
+                  <div>
+                    <h4 className="mb-1 font-heading text-xs font-semibold uppercase tracking-wider text-text-secondary/70">
+                      Пешечная структура
+                    </h4>
+                    <p>{opening.pawnStructure}</p>
+                  </div>
+                </div>
               </AccordionItem>
 
               <AccordionItem title="Идеи за белых" icon={<Crown size={18} className={accent.text} />}>
@@ -239,6 +260,10 @@ export function OpeningDetailClient({ opening }: { opening: Opening }) {
                     Проиграть партию на доске
                   </button>
                 </div>
+              </AccordionItem>
+
+              <AccordionItem title="Задачи для практики" icon={<Puzzle size={18} className={accent.text} />}>
+                <PuzzlePractice puzzles={opening.puzzles} accent={opening.accent} />
               </AccordionItem>
             </Accordion>
           </Reveal>

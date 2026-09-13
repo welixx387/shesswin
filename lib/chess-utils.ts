@@ -10,16 +10,7 @@ export type ReplayState = {
   turn: "w" | "b";
 };
 
-export function replayToIndex(moves: string[], index: number): ReplayState {
-  const chess = new Chess();
-  const clamped = Math.max(0, Math.min(index, moves.length));
-  let lastMove: { from: Square; to: Square } | null = null;
-
-  for (let i = 0; i < clamped; i++) {
-    const move = chess.move(moves[i]);
-    if (move) lastMove = { from: move.from as Square, to: move.to as Square };
-  }
-
+function checkInfo(chess: Chess) {
   const isCheck = chess.isCheck();
   let checkSquare: Square | null = null;
   if (isCheck) {
@@ -31,7 +22,35 @@ export function replayToIndex(moves: string[], index: number): ReplayState {
       }
     }
   }
+  return { isCheck, checkSquare };
+}
 
+export function replayToIndex(moves: string[], index: number): ReplayState {
+  const chess = new Chess();
+  const clamped = Math.max(0, Math.min(index, moves.length));
+  let lastMove: { from: Square; to: Square } | null = null;
+
+  for (let i = 0; i < clamped; i++) {
+    const move = chess.move(moves[i]);
+    if (move) lastMove = { from: move.from as Square, to: move.to as Square };
+  }
+
+  const { isCheck, checkSquare } = checkInfo(chess);
+
+  return {
+    fen: chess.fen(),
+    lastMove,
+    isCheck,
+    checkSquare,
+    isCheckmate: chess.isCheckmate(),
+    isGameOver: chess.isGameOver(),
+    turn: chess.turn(),
+  };
+}
+
+export function stateFromFen(fen: string, lastMove: { from: Square; to: Square } | null = null): ReplayState {
+  const chess = new Chess(fen);
+  const { isCheck, checkSquare } = checkInfo(chess);
   return {
     fen: chess.fen(),
     lastMove,

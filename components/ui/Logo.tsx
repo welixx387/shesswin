@@ -4,7 +4,7 @@ import { useId } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { KNIGHT_PATHS } from "@/lib/knight-paths";
+import { QUEEN_CIRCLES, QUEEN_PATHS } from "@/lib/queen-shape";
 
 type LogoProps = {
   size?: number;
@@ -17,6 +17,12 @@ export function Logo({ size = 28, showWordmark = true, animate = true, className
   const uid = useId();
   const gradientId = `shesswin-logo-gradient-${uid}`;
   const glowId = `shesswin-logo-glow-${uid}`;
+  const strokeProps = {
+    stroke: `url(#${gradientId})`,
+    strokeWidth: 1.75,
+    strokeLinecap: "round" as const,
+    strokeLinejoin: "round" as const,
+  };
 
   return (
     <Link
@@ -58,31 +64,41 @@ export function Logo({ size = 28, showWordmark = true, animate = true, className
             />
           )}
 
-          {KNIGHT_PATHS.map((d, i) =>
+          {QUEEN_PATHS.map((d, i) =>
             animate ? (
               <motion.path
                 key={d}
                 d={d}
-                stroke={`url(#${gradientId})`}
-                strokeWidth={1.75}
-                strokeLinecap="round"
-                strokeLinejoin="round"
+                {...strokeProps}
                 initial={{ pathLength: 0, opacity: 0 }}
                 animate={{ pathLength: 1, opacity: 1 }}
                 transition={{
-                  pathLength: { duration: 0.9, delay: i * 0.12, ease: [0.4, 0, 0.2, 1] },
-                  opacity: { duration: 0.2, delay: i * 0.12 },
+                  pathLength: { duration: 0.9, delay: i * 0.1, ease: [0.4, 0, 0.2, 1] },
+                  opacity: { duration: 0.2, delay: i * 0.1 },
                 }}
               />
             ) : (
-              <path
-                key={d}
-                d={d}
-                stroke={`url(#${gradientId})`}
-                strokeWidth={1.75}
-                strokeLinecap="round"
-                strokeLinejoin="round"
+              <path key={d} d={d} {...strokeProps} />
+            )
+          )}
+
+          {QUEEN_CIRCLES.map((c, i) =>
+            animate ? (
+              <motion.circle
+                key={`${c.cx}-${c.cy}`}
+                cx={c.cx}
+                cy={c.cy}
+                r={c.r}
+                {...strokeProps}
+                initial={{ pathLength: 0, opacity: 0 }}
+                animate={{ pathLength: 1, opacity: 1 }}
+                transition={{
+                  pathLength: { duration: 0.5, delay: 0.5 + i * 0.1, ease: [0.4, 0, 0.2, 1] },
+                  opacity: { duration: 0.2, delay: 0.5 + i * 0.1 },
+                }}
               />
+            ) : (
+              <circle key={`${c.cx}-${c.cy}`} cx={c.cx} cy={c.cy} r={c.r} {...strokeProps} />
             )
           )}
         </motion.svg>
